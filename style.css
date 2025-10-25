@@ -266,7 +266,7 @@ a.author{
     opacity: 0;
   }
   100% {
-    margin-top: -200px;;
+    margin-top: -300px; /* -200px'den -300px'e değiştirdik */
     opacity: 1;
   }
 }
