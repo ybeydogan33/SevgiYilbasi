@@ -9,6 +9,11 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            scrollbar-width: none;
+        }
+
+        *::-webkit-scrollbar {
+            display: none;
         }
 
         body {
@@ -19,6 +24,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            margin: 0;
+            padding: 0;
         }
 
         .container {
@@ -204,28 +211,155 @@
         .celebration-content {
             text-align: center;
             animation: celebrationZoom 1s ease-out;
+            max-height: 95vh;
+            overflow: hidden;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         .celebration-title {
-            font-size: 6rem;
+            font-size: 4rem;
             font-weight: bold;
             color: #ffd93d;
             text-shadow: 0 0 40px #ffd93d, 0 0 80px #ff6b9d;
-            margin-bottom: 2rem;
+            margin-bottom: 0.5rem;
             animation: rainbow 3s linear infinite;
         }
 
         .celebration-message {
-            font-size: 3rem;
+            font-size: 1.5rem;
             color: white;
             text-shadow: 0 0 20px rgba(255,255,255,0.8);
-            margin: 1rem 0;
+            margin: 0.3rem 0;
         }
 
         .celebration-hearts {
-            font-size: 5rem;
-            margin-top: 2rem;
+            font-size: 2rem;
+            margin-top: 0.3rem;
             animation: heartFloat 2s ease-in-out infinite;
+        }
+
+        .video-button {
+            margin-top: 0.8rem;
+            padding: 0.6rem 1.5rem;
+            font-size: 0.95rem;
+            background: linear-gradient(135deg, #ff6b9d, #ff8fab);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(255, 107, 157, 0.4);
+            transition: all 0.3s ease;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .love-letter {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            padding: 1rem;
+            margin: 0.8rem auto;
+            max-width: 600px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+        }
+
+        .love-letter h3 {
+            font-size: 1.3rem;
+            color: #ffd93d;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 20px rgba(255, 217, 61, 0.5);
+        }
+
+        .love-letter p {
+            font-size: 0.85rem;
+            line-height: 1.4;
+            color: white;
+            text-align: center;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes letterFloat {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+
+        .video-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(255, 107, 157, 0.6);
+        }
+
+        .video-button:active {
+            transform: translateY(-2px);
+        }
+
+        .video-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 200;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .video-container.active {
+            display: flex;
+        }
+
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            background: black;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+        }
+
+        .video-wrapper video {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .close-video {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: none;
+            color: white;
+            font-size: 2rem;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .close-video:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
         }
 
         .confetti {
@@ -289,16 +423,54 @@
 
         @media (max-width: 768px) {
             .message {
-                font-size: 2rem;
+                font-size: 1.5rem;
+                padding: 0 1rem;
             }
             .message span {
-                font-size: 1.5rem;
+                font-size: 1.1rem;
             }
             .year-container {
-                font-size: 5rem;
+                font-size: 3rem;
             }
             .heart {
-                font-size: 3rem;
+                font-size: 2rem;
+            }
+            .countdown {
+                font-size: 1rem;
+                padding: 0 1rem;
+            }
+            .celebration-title {
+                font-size: 2.5rem;
+            }
+            .celebration-message {
+                font-size: 1.1rem;
+                padding: 0 1rem;
+            }
+            .celebration-hearts {
+                font-size: 1.5rem;
+            }
+            .video-button {
+                font-size: 0.85rem;
+                padding: 0.5rem 1.2rem;
+            }
+            .love-letter {
+                padding: 0.8rem;
+                margin: 0.5rem;
+            }
+            .love-letter h3 {
+                font-size: 1.1rem;
+            }
+            .love-letter p {
+                font-size: 0.75rem;
+                line-height: 1.3;
+            }
+            .video-wrapper {
+                margin: 1rem;
+            }
+            .close-video {
+                width: 40px;
+                height: 40px;
+                font-size: 1.5rem;
             }
         }
     </style>
@@ -312,9 +484,33 @@
             <div class="celebration-message">Mutlu Yıllar</div>
             <div class="celebration-message">Sevgilim!</div>
             <div class="celebration-hearts">💕 💖 💝 💗 💓</div>
-            <div class="celebration-message" style="font-size: 2rem; margin-top: 2rem;">
+            <div class="celebration-message" style="font-size: 1.3rem; margin-top: 0.5rem;">
                 Seninle geçireceğim en güzel yıl olacak ✨
             </div>
+            
+            <div class="love-letter">
+                <h3>💌 Sevgilim</h3>
+                <p>
+                    Bu yılın bana kattığı en güzel şey sensin. İyi ki seni buldum, iyi ki hayatımdasın.
+                    Seninle çok mutluyum ve seni çok seviyorum. 
+                    Hep böyle mutlu olalım, birlikte başarılarımıza ulaşalım, 
+                    hedeflerimize doğru el ele ilerleyelim. 2026'nın bizim için en güzel yıl olmasını diliyorum. 💕
+                </p>
+            </div>
+            
+            <button class="video-button" onclick="openVideo()">
+                🎬 Özel Videoyu İzle
+            </button>
+        </div>
+    </div>
+
+    <div class="video-container" id="videoContainer">
+        <div class="video-wrapper">
+            <button class="close-video" onclick="closeVideo()">✕</button>
+            <video id="specialVideo" controls>
+                <source src="video.mp4" type="video/mp4">
+                Tarayıcınız video etiketini desteklemiyor.
+            </video>
         </div>
     </div>
     
@@ -379,7 +575,7 @@
 
         // Yeni yıla geri sayım
         let celebrationShown = false;
-        const targetTime = new Date().getTime() + 10000; // 10 saniye sonra
+        const targetTime = new Date().getTime() + 3000; // 10 saniye sonra
         
         function updateCountdown() {
             const now = new Date().getTime();
@@ -437,6 +633,21 @@
         document.addEventListener('click', (e) => {
             createFirework(e.clientX, e.clientY);
         });
+
+        // Video fonksiyonları
+        function openVideo() {
+            const videoContainer = document.getElementById('videoContainer');
+            const video = document.getElementById('specialVideo');
+            videoContainer.classList.add('active');
+            video.play();
+        }
+
+        function closeVideo() {
+            const videoContainer = document.getElementById('videoContainer');
+            const video = document.getElementById('specialVideo');
+            videoContainer.classList.remove('active');
+            video.pause();
+        }
     </script>
 </body>
 </html>
