@@ -2,651 +2,411 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mutlu Yıllar 2026 - Sevgilim</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Mutlu Yıllar Sevgilim ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            scrollbar-width: none;
+        :root {
+            --primary-glow: 255, 100, 150;
+            --glass-bg: rgba(255, 255, 255, 0.12);
+            --glass-border: rgba(255, 255, 255, 0.3);
         }
 
-        *::-webkit-scrollbar {
-            display: none;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            /* iPhone Safari adres çubuğu sorunu için dvh kullanımı */
+            height: 100vh; 
+            height: 100dvh; 
+            width: 100%; 
             overflow: hidden;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 0;
-            padding: 0;
+            font-family: 'Poppins', sans-serif; color: #fff;
+            background: #0f0c29;
         }
 
-        .container {
-            text-align: center;
-            z-index: 10;
-            position: relative;
+        /* ARKA PLAN */
+        .bg-blurred-layer {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -10;
+            background: url('https://images.unsplash.com/photo-1576919228636-09775a333921?q=80&w=2574&auto=format&fit=crop') no-repeat center center/cover;
+        }
+        .bg-blurred-layer::after {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            backdrop-filter: blur(30px) brightness(0.5);
+            background: rgba(15, 12, 41, 0.5);
         }
 
-        .message {
-            font-size: 3rem;
-            color: white;
-            text-shadow: 0 0 20px rgba(255,255,255,0.5);
-            margin-bottom: 2rem;
-            animation: fadeInDown 1s ease-out;
+        .elements-container { position: absolute; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+        .snowflake { position: absolute; color: #fff; opacity: 0.7; animation: fall linear infinite; pointer-events: none; }
+        .floating-emoji { position: absolute; opacity: 0; animation: floatUp linear infinite; bottom: -50px; text-shadow: 0 0 15px rgba(255,255,255,0.4); pointer-events: none; }
+
+        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+        @keyframes floatUp { 
+            0% { opacity: 0; transform: translateY(0) scale(0.8); } 
+            10% { opacity: 0.8; } 90% { opacity: 0.8; } 
+            100% { opacity: 0; transform: translateY(-120vh) scale(1.1); } 
         }
 
-        .message span {
-            display: block;
-            font-size: 2rem;
-            margin-top: 1rem;
-            opacity: 0;
-            animation: fadeIn 1s ease-out 0.5s forwards;
+        .d-none { display: none !important; }
+        .fade-out { opacity: 0; pointer-events: none; transition: opacity 1s ease; }
+        
+        /* GERİ SAYIM STİLİ */
+        .intro-container {
+            position: absolute; width: 100%; height: 100%;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            z-index: 10; transition: opacity 0.8s ease;
+            /* iPhone Safe Area */
+            padding-bottom: env(safe-area-inset-bottom);
         }
-
-        .year-container {
-            font-size: 8rem;
-            font-weight: bold;
-            color: white;
-            position: relative;
-            display: inline-block;
-            margin: 2rem 0;
+        .intro-title {
+            font-family: 'Great Vibes', cursive; font-size: 3.5rem; margin-bottom: 30px;
+            text-align: center; text-shadow: 0 0 20px rgba(255,255,255,0.4);
+            padding: 0 20px;
         }
-
-        .year-old, .year-new {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            text-shadow: 0 0 30px rgba(255,255,255,0.8);
+        
+        .countdown-wrapper { display: flex; gap: 15px; text-align: center; margin-bottom: 40px; }
+        .time-box {
+            background: rgba(255,255,255,0.1); padding: 15px; border-radius: 15px;
+            backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.2); min-width: 70px;
         }
+        .time-val { font-size: 2rem; font-weight: 700; display: block; }
+        .time-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; opacity: 0.8; }
 
-        .year-old {
-            animation: slideOut 2s ease-in-out 2s forwards;
-        }
-
-        .year-new {
-            opacity: 0;
-            animation: slideIn 2s ease-in-out 2s forwards;
-        }
-
-        .heart {
-            font-size: 4rem;
-            color: #ff6b9d;
-            animation: heartbeat 1.5s ease-in-out infinite;
-            margin-top: 2rem;
-            filter: drop-shadow(0 0 20px #ff6b9d);
-        }
-
-        .firework {
-            position: absolute;
-            width: 5px;
-            height: 5px;
-            border-radius: 50%;
-            animation: explode 1.5s ease-out infinite;
-        }
-
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-            }
-        }
-
-        @keyframes slideOut {
-            0% {
-                opacity: 1;
-                transform: translateX(-50%) scale(1);
-            }
-            100% {
-                opacity: 0;
-                transform: translateX(-50%) scale(0.5) translateY(-100px);
-            }
-        }
-
-        @keyframes slideIn {
-            0% {
-                opacity: 0;
-                transform: translateX(-50%) scale(0.5) translateY(100px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateX(-50%) scale(1);
-            }
-        }
-
-        @keyframes heartbeat {
-            0%, 100% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.2);
-            }
-        }
-
-        @keyframes explode {
-            0% {
-                transform: translate(0, 0);
-                opacity: 1;
-            }
-            100% {
-                transform: translate(var(--x), var(--y));
-                opacity: 0;
-            }
-        }
-
-        .particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-        }
-
-        .particle {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background: white;
-            border-radius: 50%;
-            animation: float 3s ease-in-out infinite;
-            opacity: 0.6;
-        }
-
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0) translateX(0);
-            }
-            50% {
-                transform: translateY(-20px) translateX(10px);
-            }
-        }
-
-        .countdown {
-            font-size: 1.5rem;
-            color: white;
-            margin-top: 2rem;
-            opacity: 0;
-            animation: fadeIn 1s ease-out 1s forwards;
-        }
-
-        .celebration {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 100;
-            animation: celebrationPulse 2s ease-in-out infinite;
-        }
-
-        .celebration.active {
-            display: flex;
-        }
-
-        .container.hidden {
-            display: none;
-        }
-
-        .celebration-content {
-            text-align: center;
-            animation: celebrationZoom 1s ease-out;
-            max-height: 95vh;
-            overflow: hidden;
-            padding: 1rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .celebration-title {
-            font-size: 4rem;
-            font-weight: bold;
-            color: #ffd93d;
-            text-shadow: 0 0 40px #ffd93d, 0 0 80px #ff6b9d;
-            margin-bottom: 0.5rem;
-            animation: rainbow 3s linear infinite;
-        }
-
-        .celebration-message {
-            font-size: 1.5rem;
-            color: white;
-            text-shadow: 0 0 20px rgba(255,255,255,0.8);
-            margin: 0.3rem 0;
-        }
-
-        .celebration-hearts {
-            font-size: 2rem;
-            margin-top: 0.3rem;
-            animation: heartFloat 2s ease-in-out infinite;
-        }
-
-        .video-button {
-            margin-top: 0.8rem;
-            padding: 0.6rem 1.5rem;
-            font-size: 0.95rem;
-            background: linear-gradient(135deg, #ff6b9d, #ff8fab);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            box-shadow: 0 10px 30px rgba(255, 107, 157, 0.4);
-            transition: all 0.3s ease;
-            font-weight: bold;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-
-        .love-letter {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 15px;
-            padding: 1rem;
-            margin: 0.8rem auto;
-            max-width: 600px;
-            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
-        }
-
-        .love-letter h3 {
-            font-size: 1.3rem;
-            color: #ffd93d;
-            margin-bottom: 0.5rem;
-            text-shadow: 0 0 20px rgba(255, 217, 61, 0.5);
-        }
-
-        .love-letter p {
-            font-size: 0.85rem;
+        /* ŞAKA BUTONU */
+        .btn-skip-prank {
+            background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.5);
+            color: #fff; padding: 15px 25px; border-radius: 50px; font-size: 0.95rem;
+            cursor: pointer; backdrop-filter: blur(5px); transition: all 0.3s;
+            animation: pulse 2s infinite; text-align: center; max-width: 90%;
             line-height: 1.4;
-            color: white;
-            text-align: center;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        .btn-skip-prank:active { transform: scale(0.95); background: rgba(255, 255, 255, 0.3); }
+
+        /* ŞAKA MODALI */
+        .prank-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85); z-index: 100;
+            display: flex; justify-content: center; align-items: center;
+            padding: 20px;
+        }
+        .prank-box {
+            background: white; color: #333; padding: 30px; border-radius: 20px;
+            text-align: center; width: 100%; max-width: 350px;
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .prank-box h3 { color: #e74c3c; font-size: 1.8rem; margin-bottom: 15px; }
+        .prank-box p { font-size: 1.1rem; line-height: 1.5; margin-bottom: 20px; }
+        .btn-close-prank {
+            background: #e74c3c; color: white; border: none; padding: 12px 30px;
+            border-radius: 20px; font-size: 1rem; cursor: pointer;
+        }
+        @keyframes popIn { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(255, 255, 255, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); } }
+
+        /* KART */
+        .celebration-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; justify-content: center; align-items: center;
+            z-index: 20; opacity: 0; pointer-events: none;
+            transition: all 1s ease; transform: scale(0.9);
+            padding-bottom: env(safe-area-inset-bottom); /* iPhone alt çubuk koruması */
+        }
+        .celebration-overlay.active { opacity: 1; pointer-events: all; transform: scale(1); }
+
+        .glass-card {
+            position: relative; width: 92%; max-width: 500px; max-height: 85vh;
+            padding: 2rem 1.5rem; border-radius: 30px; text-align: center;
+            background: var(--glass-bg); overflow-y: auto;
+            -webkit-overflow-scrolling: touch; /* iOS smooth scroll */
+            box-shadow: 0 30px 60px -12px rgba(0,0,0,0.5), inset 0 0 20px rgba(255,255,255,0.1), 0 0 0 1px var(--glass-border);
+            backdrop-filter: blur(25px) saturate(180%);
         }
 
-        @keyframes letterFloat {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-5px);
-            }
+        .photo-slider {
+            width: 100%; height: 200px; position: relative;
+            margin-bottom: 1.5rem; border-radius: 15px; overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3); border: 4px solid #fff;
+            transform: rotate(-2deg);
+        }
+        .slide {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0; transition: opacity 1s ease-in-out;
+            background-size: cover; background-position: center;
+        }
+        .slide.active { opacity: 1; }
+
+        .glass-card h1 {
+            font-family: 'Great Vibes', cursive; font-size: 2.8rem; margin-bottom: 1rem;
+            background: linear-gradient(to right, #fff, #ffd1dc);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+        }
+        .message-body {
+            font-size: 1rem; line-height: 1.6; color: rgba(255,255,255,0.95);
+            margin-bottom: 1.5rem; min-height: 100px;
         }
 
-        .video-button:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(255, 107, 157, 0.6);
+        .wish-container {
+            background: rgba(0,0,0,0.2); padding: 15px; border-radius: 15px;
+            margin-bottom: 1.5rem; border: 1px solid rgba(255,255,255,0.1);
         }
-
-        .video-button:active {
-            transform: translateY(-2px);
+        .wish-input {
+            width: 100%; padding: 12px; border-radius: 10px; border: none;
+            margin-bottom: 10px; background: rgba(255,255,255,0.9); color: #333; 
+            font-family: 'Poppins', sans-serif;
+            /* iPhone'da otomatik zoom'u engellemek için font-size en az 16px olmalı */
+            font-size: 16px; 
         }
-
-        .video-container {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
+        .wish-input:focus { outline: none; }
+        
+        .btn-wish {
+            padding: 10px 25px; background: var(--primary-glow); border: none;
+            border-radius: 20px; color: white; cursor: pointer; font-size: 1rem; transition: 0.3s;
             width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            z-index: 200;
-            justify-content: center;
-            align-items: center;
-            padding: 2rem;
         }
 
-        .video-container.active {
-            display: flex;
+        .btn-modern {
+            padding: 15px 30px; font-size: 1.1rem; font-weight: 600;
+            color: white; border: none; border-radius: 50px; cursor: pointer;
+            background: linear-gradient(135deg, #ff6b6b, #c0392b);
+            box-shadow: 0 10px 25px rgba(192, 57, 43, 0.4);
+            display: inline-flex; align-items: center; gap: 10px; transition: transform 0.3s;
+            width: 100%; justify-content: center;
+        }
+        .btn-modern:active { transform: scale(0.98); }
+
+        .video-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; z-index: 200; display: flex; justify-content: center; align-items: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
+        }
+        .video-modal.active { opacity: 1; pointer-events: all; }
+        .video-wrapper { width: 95%; max-width: 800px; position: relative; }
+        video { width: 100%; border-radius: 15px; box-shadow: 0 0 40px rgba(255,100,150,0.3); }
+        .close-btn {
+            position: absolute; top: -50px; right: 0; color: white; font-size: 2.5rem;
+            cursor: pointer; background: rgba(255,255,255,0.2); border-radius: 50%;
+            width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border:none;
         }
 
-        .video-wrapper {
-            position: relative;
-            width: 100%;
-            max-width: 900px;
-            background: black;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
-        }
-
-        .video-wrapper video {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-
-        .close-video {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            border: none;
-            color: white;
-            font-size: 2rem;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            z-index: 10;
-        }
-
-        .close-video:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: rotate(90deg);
-        }
-
-        .confetti {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background: #ffd93d;
-            animation: confettiFall 3s linear infinite;
-        }
-
-        @keyframes celebrationPulse {
-            0%, 100% {
-                opacity: 0.8;
-            }
-            50% {
-                opacity: 1;
-            }
-        }
-
-        @keyframes celebrationZoom {
-            0% {
-                transform: scale(0);
-                opacity: 0;
-            }
-            50% {
-                transform: scale(1.2);
-            }
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-
-        @keyframes rainbow {
-            0% { color: #ff6b9d; text-shadow: 0 0 40px #ff6b9d; }
-            25% { color: #ffd93d; text-shadow: 0 0 40px #ffd93d; }
-            50% { color: #6bcf7f; text-shadow: 0 0 40px #6bcf7f; }
-            75% { color: #4d9fff; text-shadow: 0 0 40px #4d9fff; }
-            100% { color: #ff6b9d; text-shadow: 0 0 40px #ff6b9d; }
-        }
-
-        @keyframes heartFloat {
-            0%, 100% {
-                transform: translateY(0) scale(1);
-            }
-            50% {
-                transform: translateY(-30px) scale(1.1);
-            }
-        }
-
-        @keyframes confettiFall {
-            0% {
-                transform: translateY(-100vh) rotate(0deg);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(100vh) rotate(720deg);
-                opacity: 0;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .message {
-                font-size: 1.5rem;
-                padding: 0 1rem;
-            }
-            .message span {
-                font-size: 1.1rem;
-            }
-            .year-container {
-                font-size: 3rem;
-            }
-            .heart {
-                font-size: 2rem;
-            }
-            .countdown {
-                font-size: 1rem;
-                padding: 0 1rem;
-            }
-            .celebration-title {
-                font-size: 2.5rem;
-            }
-            .celebration-message {
-                font-size: 1.1rem;
-                padding: 0 1rem;
-            }
-            .celebration-hearts {
-                font-size: 1.5rem;
-            }
-            .video-button {
-                font-size: 0.85rem;
-                padding: 0.5rem 1.2rem;
-            }
-            .love-letter {
-                padding: 0.8rem;
-                margin: 0.5rem;
-            }
-            .love-letter h3 {
-                font-size: 1.1rem;
-            }
-            .love-letter p {
-                font-size: 0.75rem;
-                line-height: 1.3;
-            }
-            .video-wrapper {
-                margin: 1rem;
-            }
-            .close-video {
-                width: 40px;
-                height: 40px;
-                font-size: 1.5rem;
-            }
+        @media (max-width: 380px) { /* Küçük iPhone'lar için */
+            .intro-title { font-size: 2.5rem; }
+            .time-val { font-size: 1.5rem; }
+            .time-box { min-width: 55px; padding: 10px; }
         }
     </style>
 </head>
 <body>
-    <div class="particles" id="particles"></div>
-    
-    <div class="celebration" id="celebration">
-        <div class="celebration-content">
-            <div class="celebration-title">🎊 2026 🎊</div>
-            <div class="celebration-message">Mutlu Yıllar</div>
-            <div class="celebration-message">Sevgilim!</div>
-            <div class="celebration-hearts">💕 💖 💝 💗 💓</div>
-            <div class="celebration-message" style="font-size: 1.3rem; margin-top: 0.5rem;">
-                Seninle geçireceğim en güzel yıl olacak ✨
-            </div>
-            
-            <div class="love-letter">
-                <h3>💌 Sevgilim</h3>
-                <p>
-                    Bu yılın bana kattığı en güzel şey sensin. İyi ki seni buldum, iyi ki hayatımdasın.
-                    Seninle çok mutluyum ve seni çok seviyorum. 
-                    Hep böyle mutlu olalım, birlikte başarılarımıza ulaşalım, 
-                    hedeflerimize doğru el ele ilerleyelim. 2026'nın bizim için en güzel yıl olmasını diliyorum. 💕
-                </p>
-            </div>
-            
-            <button class="video-button" onclick="openVideo()">
-                🎬 Özel Videoyu İzle
-            </button>
+    <audio id="bgMusic" loop>
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="bg-blurred-layer"></div>
+    <div class="elements-container" id="elementsContainer"></div>
+
+    <div id="prankModal" class="prank-overlay d-none">
+        <div class="prank-box">
+            <div style="font-size: 3rem; margin-bottom: 10px;">😜</div>
+            <h3>Şaka Yaptım!</h3>
+            <p>Bu kadar sabırsız olma aşkım, güzel şeyler zaman alır. Beklemeye devam et bakalım... ⏳❤️</p>
+            <button class="btn-close-prank" onclick="closePrank()">Tamam, Bekliyorum 😇</button>
         </div>
     </div>
 
-    <div class="video-container" id="videoContainer">
+    <div class="intro-container" id="intro">
+        <div class="intro-title">2026'ya Kalan Süre</div>
+        <div class="countdown-wrapper">
+            <div class="time-box"><span class="time-val" id="days">00</span><span class="time-label">GÜN</span></div>
+            <div class="time-box"><span class="time-val" id="hours">00</span><span class="time-label">SAAT</span></div>
+            <div class="time-box"><span class="time-val" id="minutes">00</span><span class="time-label">DK</span></div>
+            <div class="time-box"><span class="time-val" id="seconds">00</span><span class="time-label">SN</span></div>
+        </div>
+        <button class="btn-skip-prank" onclick="showPrank()">🎁 Sürprizi hemen görmek için tıkla!</button>
+    </div>
+
+    <div class="celebration-overlay" id="celebration">
+        <div class="glass-card">
+            <div class="photo-slider" id="photoSlider">
+                <div class="slide active" style="background-image: url('foto1.jpg');"></div>
+                <div class="slide" style="background-image: url('foto3.jpg');"></div>
+                <div class="slide" style="background-image: url('foto2.jpg');"></div>
+            </div>
+
+            <h1>Mutlu Yıllar Bitanem</h1>
+            <div class="message-body" id="typewriterText"></div>
+
+            <div class="wish-container">
+                <input type="text" class="wish-input" id="wishInput" placeholder="2026 için bir dilek tut...">
+                <button class="btn-wish" id="btnWish" onclick="sendWish()">Dileği Gönder ✨</button>
+            </div>
+            
+            <button class="btn-modern" onclick="openVideo()"><span>🎬</span> Bizim Videomuz</button>
+        </div>
+    </div>
+
+    <div class="video-modal" id="videoModal">
         <div class="video-wrapper">
-            <button class="close-video" onclick="closeVideo()">✕</button>
-            <video id="specialVideo" controls>
+            <button class="close-btn" onclick="closeVideo()">✕</button>
+            <video id="myVideo" controls playsinline>
                 <source src="video.mp4" type="video/mp4">
-                Tarayıcınız video etiketini desteklemiyor.
             </video>
         </div>
     </div>
-    
-    <div class="container">
-        <div class="message">
-            Mutlu Yıllar
-            <span>Sevgilim ❤️</span>
-        </div>
-        
-        <div class="year-container">
-            <div class="year-old">2025</div>
-            <div class="year-new">2026</div>
-        </div>
-        
-        <div class="heart">💝</div>
-        
-        <div class="countdown" id="countdown"></div>
-    </div>
 
     <script>
-        // Partikül oluşturma
-        const particlesContainer = document.getElementById('particles');
-        for (let i = 0; i < 50; i++) {
-            const particle = document.createElement('div');
-            particle.className = 'particle';
-            particle.style.left = Math.random() * 100 + '%';
-            particle.style.top = Math.random() * 100 + '%';
-            particle.style.animationDelay = Math.random() * 3 + 's';
-            particle.style.animationDuration = (Math.random() * 2 + 2) + 's';
-            particlesContainer.appendChild(particle);
-        }
-
-        // Havai fişek efekti
-        function createFirework(x, y) {
-            const colors = ['#ff6b9d', '#ffd93d', '#6bcf7f', '#4d9fff', '#a78bfa'];
-            const particleCount = 30;
-            
-            for (let i = 0; i < particleCount; i++) {
-                const firework = document.createElement('div');
-                firework.className = 'firework';
-                firework.style.left = x + 'px';
-                firework.style.top = y + 'px';
-                firework.style.background = colors[Math.floor(Math.random() * colors.length)];
-                
-                const angle = (Math.PI * 2 * i) / particleCount;
-                const velocity = 50 + Math.random() * 100;
-                firework.style.setProperty('--x', Math.cos(angle) * velocity + 'px');
-                firework.style.setProperty('--y', Math.sin(angle) * velocity + 'px');
-                
-                document.body.appendChild(firework);
-                
-                setTimeout(() => firework.remove(), 1500);
-            }
-        }
-
-        // Rastgele havai fişek patlatma
-        setInterval(() => {
-            const x = Math.random() * window.innerWidth;
-            const y = Math.random() * window.innerHeight;
-            createFirework(x, y);
-        }, 1000);
-
-        // Yeni yıla geri sayım
-        let celebrationShown = false;
-        const targetTime = new Date().getTime() + 3000; // 10 saniye sonra
+        // --- AYARLAR ---
+        const messageToType = "Seninle geçen her an, takvimdeki sıradan yapraklardan çok daha fazlası; ruhumun nefes aldığı en kıymetli zamanlar. 2025'in bana verdiği en güzel hediye sendin. Yeni yılda, geçmişin tatlı anıları ve geleceğin heyecanlı hayalleri arasında, kalbim sadece seninle atacak. İyi ki varsın, seni her şeyden çok seviyorum. ❤️";
         
-        function updateCountdown() {
-            const now = new Date().getTime();
-            const diff = targetTime - now;
-            
-            if (diff > 0) {
-                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-                
-                document.getElementById('countdown').innerHTML = 
-                    `Kutlama başlıyor: ${seconds} saniye`;
-            } else {
-                if (!celebrationShown) {
-                    document.getElementById('countdown').innerHTML = '🎊 Mutlu Yıllar! 🎊';
-                    showCelebration();
-                    celebrationShown = true;
+        // TEST MODU: 
+        // true = 5 saniye sayar, sonra açılır. (Test ederken kullan)
+        // false = Gerçekten 1 Ocak 2026'ya kadar bekler.
+        const TEST_MODE = false; 
+        
+        const isMobile = window.innerWidth < 768;
+        const container = document.getElementById('elementsContainer');
+        const bgMusic = document.getElementById('bgMusic');
+
+        // --- ŞAKA VE MÜZİK BAŞLATMA ---
+        function showPrank() {
+            document.getElementById('prankModal').classList.remove('d-none');
+            // Müzik Başlatma (iOS Uyumlu)
+            bgMusic.volume = 0.5;
+            bgMusic.play().catch(e => console.log("Otomatik oynatma engellendi"));
+        }
+
+        function closePrank() {
+            document.getElementById('prankModal').classList.add('d-none');
+        }
+
+        // --- GERİ SAYIM ---
+        function startCountdown() {
+            const countToDate = new Date("Jan 1, 2026 00:00:00").getTime();
+            let fakeTimeLeft = 5; 
+
+            const timer = setInterval(() => {
+                const now = new Date().getTime();
+                let distance = countToDate - now;
+
+                if (TEST_MODE) {
+                    distance = fakeTimeLeft * 1000;
+                    fakeTimeLeft--;
+                }
+
+                if (distance < 0) {
+                    clearInterval(timer);
+                    document.getElementById('intro').classList.add('fade-out');
+                    setTimeout(() => {
+                        document.getElementById('intro').classList.add('d-none');
+                        startCelebration();
+                    }, 1000);
+                    return;
+                }
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                document.getElementById('days').innerText = days < 10 ? "0" + days : days;
+                document.getElementById('hours').innerText = hours < 10 ? "0" + hours : hours;
+                document.getElementById('minutes').innerText = minutes < 10 ? "0" + minutes : minutes;
+                document.getElementById('seconds').innerText = seconds < 10 ? "0" + seconds : seconds;
+            }, 1000);
+        }
+
+        window.onload = function() {
+            startCountdown();
+            createSnow();
+            createFloatingEmojis();
+        };
+
+        // --- KUTLAMA BAŞLAT ---
+        function startCelebration() {
+            bgMusic.play().catch(e => console.log("Müzik hatası")); 
+            document.getElementById('celebration').classList.add('active');
+            setTimeout(startTypewriter, 1000);
+            startSlider();
+        }
+
+        function startTypewriter() {
+            const element = document.getElementById('typewriterText');
+            // Daha önce yazıldıysa temizle (tekrar tetiklenirse diye)
+            element.innerHTML = ""; 
+            let i = 0;
+            function type() {
+                if (i < messageToType.length) {
+                    element.innerHTML += messageToType.charAt(i);
+                    i++;
+                    setTimeout(type, 50);
                 }
             }
+            type();
         }
 
-        // Kutlama ekranını göster
-        function showCelebration() {
-            const celebration = document.getElementById('celebration');
-            const container = document.querySelector('.container');
-            celebration.classList.add('active');
-            container.classList.add('hidden');
+        function startSlider() {
+            const slides = document.querySelectorAll('.slide');
+            if(slides.length === 0) return;
+            let currentSlide = 0;
+            setInterval(() => {
+                slides[currentSlide].classList.remove('active');
+                currentSlide = (currentSlide + 1) % slides.length;
+                slides[currentSlide].classList.add('active');
+            }, 3000);
+        }
+
+        function sendWish() {
+            const btn = document.getElementById('btnWish');
+            const input = document.getElementById('wishInput');
+            if(input.value.trim() === "") return;
             
-            // Konfeti oluştur
-            for (let i = 0; i < 100; i++) {
-                setTimeout(() => {
-                    const confetti = document.createElement('div');
-                    confetti.className = 'confetti';
-                    confetti.style.left = Math.random() * 100 + '%';
-                    confetti.style.background = ['#ff6b9d', '#ffd93d', '#6bcf7f', '#4d9fff', '#a78bfa'][Math.floor(Math.random() * 5)];
-                    confetti.style.animationDelay = Math.random() + 's';
-                    confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
-                    celebration.appendChild(confetti);
-                }, i * 30);
+            // Klavye kapansın diye odağı kaldır
+            input.blur();
+            
+            btn.innerHTML = "İletiliyor... ⏳";
+            setTimeout(() => {
+                btn.innerHTML = "Dileğin Kaydedildi ❤️";
+                btn.style.background = "#27ae60";
+                input.value = "";
+            }, 1500);
+        }
+
+        function createSnow() {
+            const count = isMobile ? 30 : 50;
+            for(let i=0; i<count; i++) {
+                const f = document.createElement('div');
+                f.className = 'snowflake'; f.innerHTML = '❄';
+                f.style.left = Math.random()*100+'%'; 
+                f.style.animationDuration = Math.random()*5+5+'s'; 
+                f.style.animationDelay = Math.random()*5+'s';
+                container.appendChild(f);
             }
-            
-            // Sürekli havai fişek patlatma
-            const fireworkInterval = setInterval(() => {
-                const x = Math.random() * window.innerWidth;
-                const y = Math.random() * window.innerHeight;
-                createFirework(x, y);
-            }, 300);
+        }
+        function createFloatingEmojis() {
+            const emojis = ['❤️', '🎄', '🎁', '🦌', '✨'];
+            const count = isMobile ? 15 : 25;
+            for(let i=0; i<count; i++) {
+                const e = document.createElement('div');
+                e.className = 'floating-emoji'; 
+                e.innerHTML = emojis[Math.floor(Math.random()*emojis.length)];
+                e.style.left = Math.random()*100+'%';
+                e.style.animationDelay = Math.random()*10+'s';
+                e.style.animationDuration = Math.random()*10+10+'s';
+                container.appendChild(e);
+            }
         }
 
-        updateCountdown();
-        setInterval(updateCountdown, 1000);
+        const videoModal = document.getElementById('videoModal');
+        const myVideo = document.getElementById('myVideo');
 
-        // Tıklama ile havai fişek
-        document.addEventListener('click', (e) => {
-            createFirework(e.clientX, e.clientY);
-        });
-
-        // Video fonksiyonları
-        function openVideo() {
-            const videoContainer = document.getElementById('videoContainer');
-            const video = document.getElementById('specialVideo');
-            videoContainer.classList.add('active');
-            video.play();
+        function openVideo() { 
+            videoModal.classList.add('active'); 
+            myVideo.play();
+            bgMusic.pause(); 
         }
 
-        function closeVideo() {
-            const videoContainer = document.getElementById('videoContainer');
-            const video = document.getElementById('specialVideo');
-            videoContainer.classList.remove('active');
-            video.pause();
+        function closeVideo() { 
+            videoModal.classList.remove('active'); 
+            myVideo.pause();
+            bgMusic.play(); 
         }
     </script>
 </body>
